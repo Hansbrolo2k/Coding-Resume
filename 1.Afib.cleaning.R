@@ -1,3 +1,5 @@
+#This is the first file for my INOVA Atrial Fibrillation research project. This shows off a little of my data cleaning capabilities
+
 #################
 #install packages
 #################
@@ -78,7 +80,7 @@ library(gridExtra)
 library(grid)
 library(gtable)
 
-#For Wei code
+#For RF code
 library(reshape2)
 install.packages("tidytext")
 library(tidytext)
