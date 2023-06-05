@@ -1,3 +1,5 @@
+#This is the second file for my INOVA Atrial Fibrillation research project. This shows off My EDA, dimensional reduction techniques, and modeling capabilities.
+
 #####################################################
 #Summary statistics and Preliminary Analysis (recurr)
 #####################################################
