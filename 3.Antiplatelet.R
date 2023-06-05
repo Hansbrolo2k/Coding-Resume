@@ -1,3 +1,6 @@
+#This file is for my INOVA Antiplatelet/Anticoagulent interaction research project. 
+#This shows off a little of my data cleaning capabilities, hypothesis testing procedures, and table creation.
+
 #################
 #install packages
 #################
