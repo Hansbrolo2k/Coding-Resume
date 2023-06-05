@@ -1,4 +1,4 @@
-/*This code demonstrates my modeling capabilities in SAS showing my linear (regression), logistic (regression), and non-linear (Gauss-Newton algorith) modeling*/
+/*This code demonstrates my modeling capabilities in SAS showing my linear (regression), logistic (regression), and non-linear (Gauss-Newton algorithm) modeling*/
 
 *RUN THIS;
 proc import datafile='/home/u45126927/my_courses/STAT 654/MarkEff_Pharma_Data_Raw.xls' 
