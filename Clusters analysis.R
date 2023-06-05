@@ -1,3 +1,6 @@
+#This file is from a personal analysis I was using to teach myself GIS. Later, it turned into a project with PeaceTech Lab to analyze NFI needs in South Sudan
+#A majority of the analysis was conducted in JMP and Tableau, but this code shows my experience with GIS in R
+
 #Install and access
 install.packages("tidyverse")
 install.packages("ggmap")
