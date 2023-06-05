@@ -1,2 +1,2 @@
 # Coding-Resume
-Welcome to my coding showcase! This repository features a brief collection of my projects, showcasing my expertise in utilizing R, SAS, and Python to extract insights and drive meaningful decisions in the healthcare and public health domains.
+Welcome to my coding showcase! This repository features a brief collection of my projects, showcasing my expertise in utilizing R, SAS, and Python to extract insights and drive meaningful decisions in the healthcare and public health domains. Please view the various branches, and note that while I often am not able to distribute the data, I would love to demonstrate my code output and meaningful conclusions.
