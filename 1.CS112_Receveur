@@ -1,0 +1,624 @@
+#This code was a project for GMU's CS 112. It demonstrates my initial use of python for creating functions that work with various data structures.
+
+#-------------------------------------------------------------------------------
+# Name: Brody Receveur
+# Project 4
+#-------------------------------------------------------------------------------
+def show(map):
+	#tracks if any value is 2 didgits or more
+	j= 0
+	#tracks if any value is 3 didgits or more (This function only works up to 3 didgits, but more didgits can be added later if needed)
+	k=0
+	#ans is an empty list for now
+	ans= ""
+	#xs is an empty list
+	xs = []
+	#for each row in matrix
+	for q in range(len(map)):
+		#saves length of row
+		no_space = len(map[q])
+		#for each value in the row
+		for i in range(len(map[q])):
+			#if there are 2 didgits, j is turned on
+			if map[q][i] >= 10:
+				j=1
+			#if there are 3 didgits, k is turned on
+			if map[q][i] >= 100:
+				k = 1
+	#if k is on, go through mapping for 3 didgits
+	if k == 1:
+		#for all values in the matrix test
+		for q in range(len(map)):
+			for i in range(len(map[q])):
+				#if the column isn't the last one use this test
+				if (i+1) < no_space:
+					#Tests how many didgits there are and then prints respective number of spaces with one space after
+					if map[q][i] >= 100:
+						xs.append(str(map[q][i]) + " ")
+					elif map[q][i] >= 10:
+						xs.append(" " +str(map[q][i]) + " ")
+					else:
+						xs.append("  " +str(map[q][i]) + " ")
+				#if the column is the last one use this test
+				else:
+					#Tests how many didgits there are and then prints respective number of spaces and a newline
+					if map[q][i] >= 100:
+						xs.append(str(map[q][i]))
+					elif map[q][i] >= 10:
+						xs.append(" " +str(map[q][i]))
+					else:
+						xs.append("  " +str(map[q][i]))
+			xs.append("\n")
+	#if j is on and k isn't on, go through mapping for 2 didgits
+	elif j == 1:
+		#for all values in the matrix test
+		for q in range(len(map)):
+			for i in range(len(map[q])):
+				#if the column isn't the last one use this test
+				if (i+1) < no_space:
+					#Tests how many didgits there are and then prints respective number of spaces with one space after
+					if map[q][i] >= 10:
+						xs.append(str(map[q][i]) + " ")
+					else:
+						xs.append(" " +str(map[q][i]) + " ")
+				#if the column is the last one use this test
+				else:
+					#Tests how many didgits there are and then prints respective number of spaces and a newline
+					if map[q][i] >= 10:
+						xs.append(str(map[q][i]))
+					else:
+						xs.append(" " +str(map[q][i]))
+			xs.append("\n")
+	#if all values are 1 didgit
+	else:
+		#for all values in the matrix test
+		for q in range(len(map)):
+			for i in range(len(map[q])):
+				#if the column isn't the last one use this test
+				if (i+1) < no_space:
+					#prints number of spaces with one space after
+					xs.append(str(map[q][i])+ " ")
+				#if the column is the last one use this test
+				else:
+					#prints number of spaces and a newline
+					xs.append(str(map[q][i]))
+					xs.append("\n")
+	#unpacks all values of list as a long string
+	for j in range(len(xs)):
+		ans += xs[j]
+	return ans
+
+def	highest_point(map):
+	#Value set at minimum and will get changed later
+	val = 1
+	#ans starts at None until updated if conditions are met
+	ans = None
+	#for all matrix, find the biggest value and store that in val
+	for row in range(len(map)):
+		for col in range(len(map[row])):
+			if map[row][col] >= val:
+				val = map[row][col]
+	#find the first occurance of that in the matrix and return the location as a tuple
+	for row in range(len(map)):
+		for col in range(len(map[row])):
+			if map[row][col] == val:
+				ans = (row,col)
+				return ans
+	#if ans is still None, return None
+	return ans
+
+def	on_map(map,	r,	c): 
+	#ans starts as False
+	ans = False
+	#For each value in the matrix
+	for row in range(len(map)):
+		for col in range(len(map[row])):
+			#if the value of the row and the value of the col are the same as the r and c they are asking for, then this point is in the matrix, so ans is True
+			if row == r and col == c:
+				ans = True
+	return ans
+
+def is_map(map):
+	#ans starts as False
+	ans = False
+	#for every row
+	for row in range(len(map)):
+		#if the row isn't a list, ans is false
+		if type(map[row])!=list:
+			return ans
+		#if it is a list, test more things
+		else:
+			#for every value in the inner list
+			for col in range(len(map[row])):
+				#if the values are integers, keep testing
+				if type(map[row][col]) == int:
+					#if the values in the matrix aren't negative
+					if map[row][col] >=0:
+						#tests to make sure we aren't in an error if next test runs
+						if row > 0:
+							#if all the row lengths are the same, ans is true
+							if len(map[row]) == len(map[row-1]):
+								ans = True
+							#if row lengths aren't the same, ans is false and end
+							else:
+								ans = False
+								return ans
+					#if they are negative, ans is false and end
+					else:
+						ans = False
+						return ans
+				#if the values aren't integers, ans is false and end
+				else:
+					ans = False
+					return ans
+	#if ans is ever True and never False, ans is True
+	return ans
+
+def	neighbors(map,	r,	c): 
+	#ans starts as empty list
+	ans = []
+	#first check if the value we are finding is on the map
+	if on_map(map,r,c) == True:
+		#Tests for top left diagonal
+		if on_map(map,r-1,c-1) == True:
+			#If true append list
+			ans.append((r-1,c-1))
+		#Tests for above value
+		if on_map(map,r-1,c) == True:
+			#If true append list
+			ans.append((r-1,c))
+		#Tests for top right diagonal
+		if on_map(map,r-1,c+1) == True:
+			#If true append list
+			ans.append((r-1,c+1))
+		#Tests for left value
+		if on_map(map,r,c-1) == True:
+			#If true append list
+			ans.append((r,c-1))
+		#Tests for right value
+		if on_map(map,r,c+1) == True:
+			#If true append list
+			ans.append((r,c+1))
+		#Tests for bottom left diagonal
+		if on_map(map,r+1,c-1) == True:
+			#If true append list
+			ans.append((r+1,c-1))
+		#Tests for bottom value
+		if on_map(map,r+1,c) == True:
+			#If true append list
+			ans.append((r+1,c))
+		#Tests for bottom right diagonal
+		if on_map(map,r+1,c+1) == True:
+			#If true append list
+			ans.append((r+1,c+1))
+	return ans
+
+def	water_adjacent(map, r, c): 
+	#ans starts as false
+	ans = False
+	#stores all neighbors
+	neigh = neighbors(map,	r,	c)
+	#if map is actually a map
+	if is_map(map):
+		#if point is on map
+		if on_map(map,	r,	c) == True:
+			#if point itself isn't water
+			if map[r][c] != 0:
+				#for all adjacent points
+				for i in range(len(neigh)):
+					#stores coordinates
+					a, b = neigh[i]
+					#if one adjacent point is water, answer is True and end
+					if map[a][b] ==0:
+						ans = True
+						return ans
+	#if any failed conditions, answer is false
+	return ans
+	
+def	count_coastline(map):
+	#ans starts at 0
+	ans = 0
+	#first check if it is a map
+	if is_map(map) == True:
+		#check for all matrix if value is land
+		for row in range(len(map)):
+			for col in range(len(map[row])):
+				if map[row][col] > 0:
+					#if it is land, is there water adjacent. If there is add one to ans
+					if water_adjacent(map, row, col) ==True:
+						ans +=1
+	return ans
+
+def	on_ridge(map,r,c):
+	#ans starts as false
+	ans = False
+	#is the map a map and is the value on the map?
+	if is_map(map) == True:
+		if on_map(map,	r,	c) == True:
+			#test for top left and bottom right diagonals
+			if on_map(map,r-1,c-1) == True and on_map(map,r+1,c+1):
+				#If both true, test to see if both are less than r,c
+				if map[r][c] > map[r-1][c-1] and map[r][c] > map[r+1][c+1]:
+					#ans is True and end
+					ans = True
+					return ans
+			#Tests for above value and below value
+			if on_map(map,r-1,c) == True and on_map(map,r+1,c) == True:
+				#If both true, test to see if both are less than r,c
+				if map[r][c] > map[r-1][c] and map[r][c] > map[r+1][c]:
+					#ans is True and end
+					ans = True
+					return ans
+			#Tests for top right diagonal and bottom left diagonal
+			if on_map(map,r-1,c+1) == True and on_map(map,r+1,c-1) == True:
+				#If both true, test to see if both are less than r,c
+				if map[r][c] > map[r-1][c+1] and map[r][c] > map[r+1][c-1]:
+					#ans is True and end
+					ans = True
+					return ans
+			#Tests for left value and right value
+			if on_map(map,r,c-1) == True and on_map(map,r,c+1) == True:
+				#If both true, test to see if both are less than r,c
+				if map[r][c] > map[r][c-1] and map[r][c] > map[r][c+1]:
+					#ans is True and end
+					ans = True
+					return ans
+	return ans
+
+def	is_peak(map,r,c):
+	#ans starts as false
+	ans = False
+	#stores all neighbors
+	neigh = neighbors(map,	r,	c)
+	#is the map a map and is the value on the map?
+	if is_map(map) == True:
+		if on_map(map,	r,	c) == True:
+			#is value land
+			if map[r][c] > 0:
+				#for all neighbors test if r,c is the biggest value. If there is a bigger value surrounding it, ans is false and end.
+				for pos in range(len(neigh)):
+					#stores coordinates
+					a, b = neigh[pos]
+					if map[a][b] < map[r][c]:
+						ans = True
+					else:
+						ans = False
+						return ans
+	#finally return ans if all tests passed and True or one or more failed and False
+	return ans
+
+def join_map_side(map1,	map2):
+	#ans is blank list
+	ans = []
+	#if both of them are maps
+	if is_map(map1) == True:
+		if is_map(map2) == True:
+			#if they are the same number of rows continue otherwise ans is None and return ans
+			if len(map1) == len(map2):
+				#For the lists of lists in both maps
+				for row1 in range(len(map1)):
+					for row2 in range(len(map2)):
+							#make sure we are only adding them if they are in the same row
+							if row1 == row2:
+								#Add them to our ans list
+								ans += [map1[row1]+map2[row2]]
+			else:
+				ans = None
+				return ans
+	#return ans
+	return ans
+	
+def join_map_below(map1, map2):
+	#softcopy both maps
+	m1 = map1[:]
+	m2 = map2[:]
+	#ans is blank list
+	ans = []
+	#find length of map 1
+	x = len(m1)
+	#For the lists of lists in both maps
+	for row1 in range(len(m1)):
+		for row2 in range(len(m2)):
+			#if they are the same number of columns continue otherwise ans is None and return ans
+			if len(m1[row1]) == len(m2[row2]):
+				#add all map 1 (no duplicates, so only when on first iteration of row 2)
+				if row2==0:
+					ans.append(m1[row1][:])
+				#make sure we are only adding 2 the second list after the first one is on its last iteration
+				if row1 == x-1:
+					#Add them to our ans list
+					ans.append(m2[row2][:])
+			else:
+				ans = None
+				return ans
+	#return ans
+	return ans
+	
+def crop(map, r1, c1, r2, c2): 
+	#ans and part start as empty lists
+	part = []			
+	ans = []
+	#if r1 comes after r2 or c1 comes after c2, we want to return an empty list
+	if r1>r2 or c1>c2:
+		return ans
+	#otherwise, test conditions
+	else:
+		#for each list in the list
+		for row in range(len(map)):
+			#(come back to this after you read next section) this section appends a new list (part) containing our new row from c1 to c2, and then resets the list for the next row
+			if row >r1 and row <=r2+1:
+				ans.append(part)
+				part = []
+			#for every column in the rows
+			for col in range(len(map[row])):
+				#is the row and column in our range given by r1,r2,c1,c2?
+				if row >=r1 and row <=r2:
+					if col>=c1 and col<=c2:
+						#if so, add it to part to be added to ans later
+						part.append(map[row][col])
+	#is the row we are looking for in the last row of the map?
+	if row >=r1 and row <=r2:
+		#if so, add the final part to the list
+		ans.append(part)
+		part = []
+	#return final answer
+	return ans
+	
+def	flooded_map(map, rise):
+	#softcopy map
+	mp = map[:]
+	#dpcpy_mp starts as empty
+	dpcpy_mp = []
+	#deepcopy map
+	for row in range(len(mp)):
+		dpcpy_mp.append(mp[row][:])
+	#if it is a map
+	if is_map(dpcpy_mp) == True:
+		#for every value
+		for row in range(len(dpcpy_mp)):
+			for col in range(len(dpcpy_mp[row])):
+				#if the value is 0 its stays 0 
+				if dpcpy_mp[row][col] == 0:
+					dpcpy_mp[row][col] = 0
+				#if the value would be less than 0, it is now just 0
+				elif dpcpy_mp[row][col] <=rise:
+					dpcpy_mp[row][col] = 0
+				#otherwise just subtract the rise in sealeve
+				else:
+					dpcpy_mp[row][col] -= rise
+	#return dpcpy_mp
+	return dpcpy_mp
+
+def	flood_map(map, rise):
+	#if it is a map
+	if is_map(map) == True:
+		#for every value
+		for row in range(len(map)):
+			for col in range(len(map[row])):
+				#if the value is 0 its stays 0
+				if map[row][col] == 0:
+					map[row][col] = 0
+				#if the value would be less than 0, it is now just 0
+				elif map[row][col] <=rise:
+					map[row][col] = 0
+				#otherwise just subtract the rise in sealeve
+				else:
+					map[row][col] -= rise
+	#return none
+	return None
+
+def	find_land(map, r, c, dir):
+	#define function for North West (Come back to these functions after reading rest of code)
+	def dirNW(map, r, c, dir, val, count):
+		#is it on the map
+		if on_map(map,r-count,c-count) == True:
+			#if it is true, our value is the new coordinate (if it is 0 we run test again. if it is land we end loop)
+			val = map[r-count][c-count]
+			return val
+		#if not ans is None because we know that all previous steps failed
+		else:
+			ans = None
+			return ans
+	#define function for North
+	def dirN(map, r, c, dir, val, count):
+		#is it on the map
+		if on_map(map,r-count,c) == True:
+			#if it is true, our value is the new coordinate (if it is 0 we run test again. if it is land we end loop)
+			val = map[r-count][c]
+			return val
+		#if not ans is None because we know that all previous steps failed
+		else:
+			ans = None
+			return ans
+	#define function for North East	
+	def dirNE(map, r, c, dir, val, count):
+		#is it on the map
+		if on_map(map,r-count,c+count) == True:
+			#if it is true, our value is the new coordinate (if it is 0 we run test again. if it is land we end loop)
+			val = map[r-count][c+count]
+			return val
+		#if not ans is None because we know that all previous steps failed
+		else:
+			ans = None
+			return ans
+	#define function for West
+	def dirW(map, r, c, dir, val, count):
+		#is it on the map
+		if on_map(map,r,c-count) == True:
+			#if it is true, our value is the new coordinate (if it is 0 we run test again. if it is land we end loop)
+			val = map[r][c-count]
+			return val
+		#if not ans is None because we know that all previous steps failed
+		else:
+			ans = None
+			return ans
+	#define function for East
+	def dirE(map, r, c, dir, val, count):
+		#is it on the map
+		if on_map(map,r,c+count) == True:
+			#if it is true, our value is the new coordinate (if it is 0 we run test again. if it is land we end loop)
+			val = map[r][c+count]
+			return val
+		#if not ans is None because we know that all previous steps failed
+		else:
+			ans = None
+			return ans
+	#define function for South West	
+	def dirSW(map, r, c, dir, val, count):
+		#is it on the map
+		if on_map(map,r+count,c-count) == True:
+			#if it is true, our value is the new coordinate (if it is 0 we run test again. if it is land we end loop)
+			val = map[r+count][c-count]
+			return val
+		#if not ans is None because we know that all previous steps failed
+		else:
+			ans = None
+			return ans
+	#define function for South
+	def dirS(map, r, c, dir, val, count):
+		#is it on the map
+		if on_map(map,r+count,c) == True:
+			#if it is true, our value is the new coordinate (if it is 0 we run test again. if it is land we end loop)
+			val = map[r+count][c]
+			return val
+		#if not ans is None because we know that all previous steps failed
+		else:
+			ans = None
+			return ans
+	#define function for South East
+	def dirSE(map, r, c, dir, val, count):
+		#is it on the map
+		if on_map(map,r+count,c+count) == True:
+			#if it is true, our value is the new coordinate (if it is 0 we run test again. if it is land we end loop)
+			val = map[r+count][c+count]
+			return val
+		#if not ans is None because we know that all previous steps failed
+		else:
+			ans = None
+			return ans
+	
+	#ans starts as 0
+	ans = 0
+	#count starts as 0
+	count = 0
+	#val starts as 0
+	val = 0
+	#if we are already on land, we just end fun and ans =0
+	if map[r][c] >0:
+		ans = 0
+		return ans
+	#while we are in water, try again
+	while val == 0:
+		#count increases every loop
+		count +=1
+		#Tests for North west
+		if dir == "NW":
+			val = dirNW(map, r, c, dir, val, count)
+		#Tests for north
+		if dir == "N":
+			val = dirN(map, r, c, dir, val, count)
+		#tests for north east
+		if dir == "NE":
+			val = dirNE(map, r, c, dir, val, count)
+		#Tests for west
+		if dir == "W":
+			val = dirW(map, r, c, dir, val, count)
+		#Tests for east
+		if dir == "E":
+			val = dirE(map, r, c, dir, val, count)
+		#Tests for south west
+		if dir == "SW":
+			val = dirSW(map, r, c, dir, val, count)
+		#Tests for south
+		if dir == "S":
+			val = dirS(map, r, c, dir, val, count)
+		#Tests for south east
+		if dir == "SE":
+			val = dirSE(map, r, c, dir, val, count)
+	#if our value is none it means we didn't hit land, so we return None
+	if val == None:
+		return val
+	#otherwise, ans = count (number of spaces away) and we return ans
+	ans = count
+	return ans
+	
+def	reorient(map):
+	#This code works for if map has up to 10 columns, but it can easily be applied to more with one or two tweeks
+	#find number of rows in map
+	m = len(map)
+	#create 10 empty lists for 10 possible columns(add more empty lists if needed)
+	a= []
+	b= []
+	c= []
+	d= []
+	e= []
+	f= []
+	g= []
+	h= []
+	i= []
+	j= []
+	#for each value of map
+	for row in range(len(map)):
+		#also, find number of columns
+		n = len(map[row])
+		for col in range(len(map[row])):
+			#if we are in column 1 (index 0), we insert the value into list a, and this will eventually become our first row
+			if col == 0:
+				a.insert(0,map[row][col])
+			#if we are in column 2(index 1), we insert the value into list a, and this will eventually become row 2 (index 1)
+			elif col == 1:
+				b.insert(0,map[row][col])
+			#if we are in column 3(index 2), we insert the value into list a, and this will eventually become row 3 (index 2)
+			elif col == 2:
+				c.insert(0,map[row][col])
+			#if we are in column 4(index 3), we insert the value into list a, and this will eventually become row 4 (index 3)
+			elif col == 3:
+				d.insert(0,map[row][col])
+			#if we are in column 5(index 4), we insert the value into list a, and this will eventually become row 5 (index 4)
+			elif col == 4:
+				e.insert(0,map[row][col])
+			#if we are in column 6(index 5), we insert the value into list a, and this will eventually become row 6 (index 5)
+			elif col == 5:
+				f.insert(0,map[row][col])
+			#if we are in column 7(index 6), we insert the value into list a, and this will eventually become row 7 (index 6)
+			elif col == 6:
+				g.insert(0,map[row][col])
+			#if we are in column 8(index 7), we insert the value into list a, and this will eventually become row 8 (index 7)
+			elif col == 7:
+				h.insert(0,map[row][col])
+			#if we are in column 9(index 8), we insert the value into list a, and this will eventually become row 9 (index 8)
+			elif col == 8:
+				i.insert(0,map[row][col])
+			#if we are in column 10(index 9), we insert the value into list a, and this will eventually become row 10 (index 9)
+			elif col == 9:
+				j.insert(0,map[row][col])
+	#if we only have 1 column in map, our answer is just that first row
+	if n == 1:
+		return [a]
+	#if we have 2 columns in map, our answer is column 1 as row 1 and column 2 as row 2
+	if n == 2:
+		return [a,b]
+	#if we have 3 columns in map, our answer is column 1 as row 1, column 2 as row 2, and column 3 as row 3
+	if n == 3:
+		return [a,b,c]
+	#if we have 4 columns in map, our answer is column 1 as row 1, column 2 as row 2, column 3 as row 3, etc.
+	if n == 4:
+		return [a,b,c,d]
+	#if we have 5 columns in map, our answer is column 1 as row 1, column 2 as row 2, column 3 as row 3, etc.
+	if n == 5:
+		return [a,b,c,d,e]
+	#if we have 6 columns in map, our answer is column 1 as row 1, column 2 as row 2, column 3 as row 3, etc.
+	if n == 6:
+		return [a,b,c,d,e,f]
+	#if we have 7 columns in map, our answer is column 1 as row 1, column 2 as row 2, column 3 as row 3, etc.
+	if n == 7:
+		return [a,b,c,d,e,f,g]
+	#if we have 8 columns in map, our answer is column 1 as row 1, column 2 as row 2, column 3 as row 3, etc.
+	if n == 8:
+		return [a,b,c,d,e,f,g,h]
+	#if we have 9 columns in map, our answer is column 1 as row 1, column 2 as row 2, column 3 as row 3, etc.
+	if n == 9:
+		return [a,b,c,d,e,f,g,h,i]
+	#if we have 10 columns in map, our answer is column 1 as row 1, column 2 as row 2, column 3 as row 3, etc.
+	if n == 10:
+		return [a,b,c,d,e,f,g,h,i,j]
